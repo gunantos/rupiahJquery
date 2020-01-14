@@ -1,0 +1,54 @@
+<html>
+<head><title>Test</title>
+</head>
+<body>
+    <input type="text" class="rp" name="rp[]" value="2.000"><br>
+    <input type="text" class="rp" name="rp[]" value="3.000"><br>
+    <input type="text" class="rp" name="rp[]" value="4.000"><br>
+    <input type="text" class="rp" name="rp[]" value="5.000"><br>
+    <input type="text" class="rp" name="rp[]" value="6.000"><br>
+    <input type="text" id="total" name="total" value="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        //fungsi untuk menjumlahkan semua input text dengan nama rp
+        function total(){
+            var total=0;
+            $('input[name="rp[]"]').each(function(){
+                var val = this.value;
+                val = val.replace(/[a-z|A-Z|\.]/g, '');
+                total += parseFloat(val);
+            });
+            $('#total').val(to_rp(total));
+        }
+        //mengubah val ke bentuk rupiah
+        function to_rp(val)
+        {
+            if(jQuery.type(val) === 'string') //cek value type string
+            {
+                val = val.replace(/[a-z|A-Z|\.]/g, '');
+            }
+            //ubah value ke rupiah
+            return parseFloat(val).toLocaleString('id', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0,
+                minimumFractionDigits: 0
+            });
+        }
+        $(document).ready(function(){
+            //ganti input text ke rupiah format
+            $('input[name="rp[]"]').each(function(){
+                $(this).val(to_rp($(this).val()));
+            });
+
+            // jika input text diganti
+            $('.rp').keyup(function(){
+                $(this).val(to_rp($(this).val()));
+                total();
+            });
+            total(); //untuk menghitung text yang sudah ada
+        });        
+    </script>
+
+</body>
+</html>
